@@ -13,4 +13,7 @@ import {
 export class Usage {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  usage: number;
 }

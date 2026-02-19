@@ -2,67 +2,41 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from '../subscription/entities/subscription.entity';
-import { GetUsageDto, GetProductAccountsDto } from './dto/usage.dto';
-import * as crypto from 'crypto';
+import { ProductService } from '../catalogue/services/product.service';
+import { PlanService } from '../catalogue/services/plan.service';
+import { AccountService } from '../subscription/services/account.service';
+import { SubscriptionService } from '../subscription/services/subscription.service';
+import { Usage } from './entities/usage.entity';
+import { Account } from '../subscription/entities/account.entity';
+import { ExternalUsageService } from './external-usage.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsageService {
   constructor(
-    @InjectRepository(Subscription)
-    private subscriptionRepository: Repository<Subscription>,
+    @InjectRepository(Usage)
+    private usageRepository: Repository<Usage>,
+    private readonly productService: ProductService,
+    private readonly planService: PlanService,
+    private readonly accountService: AccountService,
+    private readonly subscriptionService: SubscriptionService,
+    private readonly externalUsageService: ExternalUsageService,
   ) {}
 
-  /**
-   * Generate a deterministic usage number based on input parameters
-   */
-  private generateUsageFromHash(
-    productId: string,
-    planId: string,
-    accountId: string,
-    startDate: string,
-    endDate: string,
-  ): number {
-    const input = `${productId}${planId}${accountId}${startDate}${endDate}`;
-    const hash = crypto.createHash('sha256').update(input).digest('hex');
-    // Convert first 8 characters of hash to a number between 0 and 10000
-    const numericHash = parseInt(hash.substring(0, 8), 16);
-    return numericHash % 10000;
+  async randomInsert() {
+    const usage = this.usageRepository.create({
+      usage: await this.externalUsageService.getUsageFromExternal({
+        productId: uuidv4(),
+        planId: uuidv4(),
+        accountId: uuidv4(),
+        startDate: new Date(),
+        endDate: new Date(),
+      }),
+    });
+    return this.usageRepository.save(usage);
   }
 
-  /**
-   * Mock endpoint to return usage data
-   */
-  async getUsage(getUsageDto: GetUsageDto) {
-    const totalUsage = this.generateUsageFromHash(
-      getUsageDto.productId,
-      getUsageDto.planId,
-      getUsageDto.accountId,
-      getUsageDto.startDate,
-      getUsageDto.endDate,
-    );
-
-    return {
-      productId: getUsageDto.productId,
-      accountId: getUsageDto.accountId,
-      totalUsage,
-      startDate: getUsageDto.startDate,
-      endDate: getUsageDto.endDate,
-    };
-  }
-
-  /**
-   * Get all accounts subscribed to any plan under a specific product
-   */
-  async getProductAccounts(getProductAccountsDto: GetProductAccountsDto) {
-    const subscriptions = await this.subscriptionRepository
-      .createQueryBuilder('subscription')
-      .innerJoin('subscription.plan', 'plan')
-      .where('plan.productId = :productId', {
-        productId: getProductAccountsDto.productId,
-      })
-      .select('DISTINCT subscription.accountId', 'accountId')
-      .getRawMany();
-
-    return subscriptions.map((sub) => sub.accountId);
+  async findAll(): Promise<Usage[]> {
+    return await this.usageRepository.find();
   }
 }

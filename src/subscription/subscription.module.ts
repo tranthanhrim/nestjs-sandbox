@@ -10,19 +10,13 @@ import { AccountUserService } from './services/account-user.service';
 import { SubscriptionService } from './services/subscription.service';
 import { UserController } from './controllers/user.controller';
 import { AccountController } from './controllers/account.controller';
-import { AccountUserController } from './controllers/account-user.controller';
 import { SubscriptionController } from './controllers/subscription.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Account, AccountUser, Subscription]),
   ],
-  controllers: [
-    UserController,
-    AccountController,
-    AccountUserController,
-    SubscriptionController,
-  ],
+  controllers: [UserController, AccountController, SubscriptionController],
   providers: [
     UserService,
     AccountService,

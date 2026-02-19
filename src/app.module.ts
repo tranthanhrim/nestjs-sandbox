@@ -11,13 +11,22 @@ import { User } from './subscription/entities/user.entity';
 import { Account } from './subscription/entities/account.entity';
 import { AccountUser } from './subscription/entities/account-user.entity';
 import { Subscription } from './subscription/entities/subscription.entity';
+import { Usage } from './usage/entities/usage.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: ':memory:',
-      entities: [Product, Plan, User, Account, AccountUser, Subscription],
+      entities: [
+        Product,
+        Plan,
+        User,
+        Account,
+        AccountUser,
+        Subscription,
+        Usage,
+      ],
       synchronize: true, // database schema should be auto created on every application launch
       logging: false,
     }),
