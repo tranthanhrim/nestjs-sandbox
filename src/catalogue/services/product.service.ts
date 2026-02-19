@@ -27,7 +27,10 @@ export class ProductService {
     });
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto): Promise<Product | null> {
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product | null> {
     await this.productRepository.update(id, updateProductDto);
     return this.findOne(id);
   }

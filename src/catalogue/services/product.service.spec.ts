@@ -88,7 +88,10 @@ describe('ProductService', () => {
 
       const result = await service.update(mockProduct.id, updateProductDto);
 
-      expect(repository.update).toHaveBeenCalledWith(mockProduct.id, updateProductDto);
+      expect(repository.update).toHaveBeenCalledWith(
+        mockProduct.id,
+        updateProductDto,
+      );
       expect(result).toEqual(mockProduct);
     });
   });

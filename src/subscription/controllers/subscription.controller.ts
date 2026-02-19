@@ -1,6 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SubscriptionService } from '../services/subscription.service';
-import { CreateSubscriptionDto, UpdateSubscriptionDto } from '../dto/subscription.dto';
+import {
+  CreateSubscriptionDto,
+  UpdateSubscriptionDto,
+} from '../dto/subscription.dto';
 
 @Controller('subscriptions')
 export class SubscriptionController {
@@ -32,7 +43,10 @@ export class SubscriptionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateSubscriptionDto: UpdateSubscriptionDto,
+  ) {
     return this.subscriptionService.update(id, updateSubscriptionDto);
   }
 

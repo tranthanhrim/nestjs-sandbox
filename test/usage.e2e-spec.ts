@@ -35,11 +35,13 @@ describe('UsageModule (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }));
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    );
     await app.init();
 
     // Setup test data
@@ -59,7 +61,9 @@ describe('UsageModule (e2e)', () => {
     accountId = account.body.id;
 
     const startDate = new Date().toISOString();
-    const endDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+    const endDate = new Date(
+      Date.now() + 365 * 24 * 60 * 60 * 1000,
+    ).toISOString();
 
     await request(app.getHttpServer())
       .post('/subscriptions')
@@ -128,7 +132,10 @@ describe('UsageModule (e2e)', () => {
     it('should return empty array for product with no subscriptions', async () => {
       const product2 = await request(app.getHttpServer())
         .post('/products')
-        .send({ name: 'Product Without Subscriptions', description: 'No subs' });
+        .send({
+          name: 'Product Without Subscriptions',
+          description: 'No subs',
+        });
 
       return request(app.getHttpServer())
         .post('/usage/get-product-accounts')

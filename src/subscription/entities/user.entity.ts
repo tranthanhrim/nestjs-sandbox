@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { AccountUser } from './account-user.entity';
+import { Account } from './account.entity';
 
 @Entity('users')
 export class User {
@@ -27,4 +29,7 @@ export class User {
 
   @OneToMany(() => AccountUser, (accountUser) => accountUser.user)
   accountUsers: AccountUser[];
+
+  @ManyToMany(() => Account, (account) => account.users)
+  accounts: Account[];
 }

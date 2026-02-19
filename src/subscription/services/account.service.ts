@@ -24,7 +24,10 @@ export class AccountService {
     return await this.accountRepository.findOne({ where: { id } });
   }
 
-  async update(id: string, updateAccountDto: UpdateAccountDto): Promise<Account | null> {
+  async update(
+    id: string,
+    updateAccountDto: UpdateAccountDto,
+  ): Promise<Account | null> {
     await this.accountRepository.update(id, updateAccountDto);
     return this.findOne(id);
   }

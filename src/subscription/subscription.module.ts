@@ -14,9 +14,26 @@ import { AccountUserController } from './controllers/account-user.controller';
 import { SubscriptionController } from './controllers/subscription.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Account, AccountUser, Subscription])],
-  controllers: [UserController, AccountController, AccountUserController, SubscriptionController],
-  providers: [UserService, AccountService, AccountUserService, SubscriptionService],
-  exports: [UserService, AccountService, AccountUserService, SubscriptionService],
+  imports: [
+    TypeOrmModule.forFeature([User, Account, AccountUser, Subscription]),
+  ],
+  controllers: [
+    UserController,
+    AccountController,
+    AccountUserController,
+    SubscriptionController,
+  ],
+  providers: [
+    UserService,
+    AccountService,
+    AccountUserService,
+    SubscriptionService,
+  ],
+  exports: [
+    UserService,
+    AccountService,
+    AccountUserService,
+    SubscriptionService,
+  ],
 })
 export class SubscriptionModule {}

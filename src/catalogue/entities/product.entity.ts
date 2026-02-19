@@ -25,6 +25,8 @@ export class Product {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Plan, (plan) => plan.product)
+  @OneToMany(() => Plan, (plan) => plan.product, {
+    eager: true,
+  })
   plans: Plan[];
 }

@@ -73,7 +73,9 @@ describe('UserService', () => {
     it('should return a single user', async () => {
       const result = await service.findOne(mockUser.id);
 
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: mockUser.id } });
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: mockUser.id },
+      });
       expect(result).toEqual(mockUser);
     });
   });
@@ -85,7 +87,10 @@ describe('UserService', () => {
 
       const result = await service.update(mockUser.id, updateUserDto);
 
-      expect(repository.update).toHaveBeenCalledWith(mockUser.id, updateUserDto);
+      expect(repository.update).toHaveBeenCalledWith(
+        mockUser.id,
+        updateUserDto,
+      );
       expect(result).toEqual(mockUser);
     });
   });

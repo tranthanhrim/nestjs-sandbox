@@ -34,11 +34,13 @@ describe('SubscriptionModule (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }));
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    );
     await app.init();
 
     // Setup test data
@@ -135,7 +137,9 @@ describe('SubscriptionModule (e2e)', () => {
   describe('/subscriptions (POST)', () => {
     it('should create a new subscription', () => {
       const startDate = new Date().toISOString();
-      const endDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+      const endDate = new Date(
+        Date.now() + 365 * 24 * 60 * 60 * 1000,
+      ).toISOString();
 
       return request(app.getHttpServer())
         .post('/subscriptions')
